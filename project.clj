@@ -20,7 +20,7 @@
                  [aero "0.2.0"]
                  [honeysql "0.6.3"]
                  [nilenso/honeysql-postgres "0.2.3"]]
-  :profiles {:dev {:dependencies [[mysql/mysql-connector-java "5.1.25"]
+  :profiles {:dev {:dependencies [[mysql/mysql-connector-java "8.0.12"]
                                   [org.postgresql/postgresql "42.1.1"]]
                    :plugins [[lein-set-version "0.4.1"]
                              [lein-update-dependency "0.1.2"]
