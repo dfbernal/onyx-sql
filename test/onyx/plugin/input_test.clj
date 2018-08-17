@@ -22,6 +22,7 @@
         sql-settings {:sql/classname "com.mysql.jdbc.Driver"
                       :sql/subprotocol "mysql"
                       :sql/db-name db-name
+                      :sql/connection-properties "SslMode=Preferred"
                       :sql/subname db-sub-base
                       :sql/user db-user
                       :sql/password db-pass
