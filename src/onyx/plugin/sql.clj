@@ -21,11 +21,18 @@
            [java.sql Connection]
            [java.io ByteArrayInputStream]))
 
+(defn jdbc-url [{:keys [classname subprotocol subname db-name connection-properties]}]
+  (let [base-url (str "jdbc:" subprotocol ":" subname)]
+    (cond
+      #(contains? #{"mysql" "postgresql"} subprotocol) (str base-url "/" db-name "?" connection-properties)
+      #(contains? #{"sqlserver" "jtds:sqlserver"} subprotocol) (str base-url ";databasename=" db-name ";" connection-properties)
+      :else (str base-url "/" db-name))))
+
 (defn create-pool [spec]
   {:datasource
    (doto (ComboPooledDataSource.)
      (.setDriverClass (:classname spec))
-     (.setJdbcUrl (str "jdbc:" (:subprotocol spec) ":" (:subname spec) "/" (:db-name spec)))
+     (.setJdbcUrl (jdbc-url spec))
      (.setUser (:user spec))
      (.setPassword (:password spec))
      (.setMaxIdleTimeExcessConnections (* 30 60))
@@ -37,7 +44,8 @@
                  :subname (:sql/subname task-map)
                  :user (:sql/user task-map)
                  :password (:sql/password task-map)
-                 :db-name (:sql/db-name task-map)}]
+                 :db-name (:sql/db-name task-map)
+                 :connection-properties (:sql/connection-properties task-map)}]
     (create-pool db-spec)))
 
 ; (defn partition-table-by-uuid [{:keys [onyx.core/task-map sql/pool] :as event}]
