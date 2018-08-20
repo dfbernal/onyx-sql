@@ -24,8 +24,8 @@
 (defn jdbc-url [{:keys [classname subprotocol subname db-name connection-properties]}]
   (let [base-url (str "jdbc:" subprotocol ":" subname)]
     (cond
-      #(contains? #{"mysql" "postgresql"} subprotocol) (str base-url "/" db-name "?" connection-properties)
-      #(contains? #{"sqlserver" "jtds:sqlserver"} subprotocol) (str base-url ";databasename=" db-name ";" connection-properties)
+      (contains? #{"mysql" "postgresql"} subprotocol) (str base-url "/" db-name "?" connection-properties)
+      (contains? #{"sqlserver" "jtds:sqlserver"} subprotocol) (str base-url ";databasename=" db-name ";" connection-properties)
       :else (str base-url "/" db-name))))
 
 (defn create-pool [spec]
